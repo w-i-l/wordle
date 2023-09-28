@@ -33,6 +33,24 @@ struct MainView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.ignoresSafeArea())
+        .sheet(isPresented: $viewModel.didGameEnded) {
+            VStack(spacing: 20) {
+                Text("Congrats!\nYou have won!")
+                    .foregroundColor(.white)
+                    .font(.title)
+                
+                Button {
+                    AppService.shared.newGame()
+                    viewModel.didGameEnded = false
+                } label: {
+                    Text("New Game")
+                        .font(.body)
+                        .foregroundColor(.white)
+                        .background(Color.blue.padding(-10))
+                }
+
+            }
+        }
     }
 }
 

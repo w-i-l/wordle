@@ -8,18 +8,21 @@
 import SwiftUI
 import Combine
 
-class AppService {
+class AppService: BaseViewModel {
     var words: Set<String> = .init()
     
     var hasUserTriedWordNotification: CurrentValueSubject<Bool, Never> = .init(false)
-    var wordToGuess: String = ""
+    var wordToGuess: CurrentValueSubject<String, Never> = .init("")
     var patterns: CurrentValueSubject<[[PatternType]], Never> = .init([])
+    var didGameEnded: CurrentValueSubject<Bool, Never> = .init(false)
     
     static let shared = AppService()
     
-    private init() {
+    override private init() {
+        super.init()
+        
         self.words = fetchWords()
-        wordToGuess = self.words.randomElement()!
+        wordToGuess.value = self.words.randomElement()!
     }
     
     func fetchWords() -> Set<String> {
@@ -35,5 +38,14 @@ class AppService {
             }
         }
         return []
+    }
+    
+    func newGame() {
+        wordToGuess.value = self.words.randomElement()!
+        
+        hasUserTriedWordNotification.value = false
+        patterns.value = []
+        
+        KeyboardService.shared.stream.value = ""
     }
 }

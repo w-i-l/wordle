@@ -38,10 +38,12 @@ class GridViewModel: BaseViewModel {
             .sink { [weak self] hasUserTriedWordNotification in
                 if hasUserTriedWordNotification {
                     self?.lastRow = KeyboardService.shared.stream.value.split(separator: "\n").count - 1
-                    AppService.shared.patterns.value.append(self!.matchWord(row: self!.lastRow))
-                    
+                    let patternToAppend = self!.matchWord(row: self!.lastRow)
+                    AppService.shared.patterns.value.append(patternToAppend)
+                    if patternToAppend == Array(repeating: PatternType.matched, count: 5) {
+                        AppService.shared.didGameEnded.value = true
+                    }
                 }
-                
             }
             .store(in: &bag)
         
@@ -61,7 +63,7 @@ class GridViewModel: BaseViewModel {
         let words = string.split(separator: "\n")
         let wordToMatch = words[row]
         
-        let wordToGuess = AppService.shared.wordToGuess.uppercased()
+        let wordToGuess = AppService.shared.wordToGuess.value.uppercased()
         
         return wordToMatch.enumerated().map {
             if $0.element == wordToGuess[wordToGuess.index(wordToGuess.startIndex, offsetBy: $0.offset)] {

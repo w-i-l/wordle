@@ -9,10 +9,10 @@ import SwiftUI
 
 class MainViewModel: BaseViewModel {
     @Published var stream: String = ""
-    @Published var wordToGuess: String
+    @Published var wordToGuess: String = ""
+    @Published var didGameEnded: Bool = false
     
     override init() {
-        self.wordToGuess = AppService.shared.wordToGuess
         super.init()
         
         KeyboardService.shared.stream
@@ -25,5 +25,20 @@ class MainViewModel: BaseViewModel {
                 }
             }
             .store(in: &bag)
+        
+        AppService.shared.wordToGuess
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] wordToGuess in
+                self?.wordToGuess = wordToGuess
+            }
+            .store(in: &bag)
+        
+        AppService.shared.didGameEnded
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] didGameEnded in
+                self?.didGameEnded = didGameEnded
+            }
+            .store(in: &bag)
+        
     }
 }
