@@ -8,23 +8,27 @@
 
 /* Begin PBXBuildFile section */
 		1755B38A2AC581AA008D41C8 /* wordleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755B3892AC581AA008D41C8 /* wordleApp.swift */; };
-		1755B38C2AC581AA008D41C8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755B38B2AC581AA008D41C8 /* ContentView.swift */; };
 		1755B38E2AC581AC008D41C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1755B38D2AC581AC008D41C8 /* Assets.xcassets */; };
 		1755B3912AC581AC008D41C8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1755B3902AC581AC008D41C8 /* Preview Assets.xcassets */; };
 		1755B3992AC591AF008D41C8 /* KeyboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755B3982AC591AF008D41C8 /* KeyboardService.swift */; };
 		1755B39D2AC59299008D41C8 /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755B39C2AC59299008D41C8 /* KeyboardView.swift */; };
 		1755B39F2AC59A3D008D41C8 /* KeyboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755B39E2AC59A3D008D41C8 /* KeyboardViewModel.swift */; };
+		1755B3A22AC59F24008D41C8 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755B3A12AC59F24008D41C8 /* GridView.swift */; };
+		1755B3A52AC5A8B4008D41C8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755B3A42AC5A8B4008D41C8 /* MainView.swift */; };
+		1755B3A72AC5A8C1008D41C8 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755B3A62AC5A8C1008D41C8 /* MainViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1755B3862AC581AA008D41C8 /* wordle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wordle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1755B3892AC581AA008D41C8 /* wordleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wordleApp.swift; sourceTree = "<group>"; };
-		1755B38B2AC581AA008D41C8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1755B38D2AC581AC008D41C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1755B3902AC581AC008D41C8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1755B3982AC591AF008D41C8 /* KeyboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardService.swift; sourceTree = "<group>"; };
 		1755B39C2AC59299008D41C8 /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
 		1755B39E2AC59A3D008D41C8 /* KeyboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewModel.swift; sourceTree = "<group>"; };
+		1755B3A12AC59F24008D41C8 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
+		1755B3A42AC5A8B4008D41C8 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		1755B3A62AC5A8C1008D41C8 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +64,6 @@
 			isa = PBXGroup;
 			children = (
 				1755B3892AC581AA008D41C8 /* wordleApp.swift */,
-				1755B38B2AC581AA008D41C8 /* ContentView.swift */,
 				1755B38D2AC581AC008D41C8 /* Assets.xcassets */,
 				1755B38F2AC581AC008D41C8 /* Preview Content */,
 			);
@@ -86,6 +89,8 @@
 		1755B39A2AC59274008D41C8 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				1755B3A32AC5A8A9008D41C8 /* MainScreen */,
+				1755B3A02AC59F1A008D41C8 /* GridView */,
 				1755B39B2AC59287008D41C8 /* KeyboardView */,
 			);
 			path = UI;
@@ -98,6 +103,23 @@
 				1755B39E2AC59A3D008D41C8 /* KeyboardViewModel.swift */,
 			);
 			path = KeyboardView;
+			sourceTree = "<group>";
+		};
+		1755B3A02AC59F1A008D41C8 /* GridView */ = {
+			isa = PBXGroup;
+			children = (
+				1755B3A12AC59F24008D41C8 /* GridView.swift */,
+			);
+			path = GridView;
+			sourceTree = "<group>";
+		};
+		1755B3A32AC5A8A9008D41C8 /* MainScreen */ = {
+			isa = PBXGroup;
+			children = (
+				1755B3A42AC5A8B4008D41C8 /* MainView.swift */,
+				1755B3A62AC5A8C1008D41C8 /* MainViewModel.swift */,
+			);
+			path = MainScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,10 +193,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				1755B3992AC591AF008D41C8 /* KeyboardService.swift in Sources */,
+				1755B3A52AC5A8B4008D41C8 /* MainView.swift in Sources */,
 				1755B39F2AC59A3D008D41C8 /* KeyboardViewModel.swift in Sources */,
 				1755B39D2AC59299008D41C8 /* KeyboardView.swift in Sources */,
-				1755B38C2AC581AA008D41C8 /* ContentView.swift in Sources */,
+				1755B3A22AC59F24008D41C8 /* GridView.swift in Sources */,
 				1755B38A2AC581AA008D41C8 /* wordleApp.swift in Sources */,
+				1755B3A72AC5A8C1008D41C8 /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

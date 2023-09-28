@@ -60,7 +60,7 @@ struct KeyboardView: View {
                         KeyboardButtonView(
                             text: "TRY",
                             buttonType: .enter) {
-                                
+                                viewModel.enter()
                             }
                     }
                     
@@ -83,7 +83,7 @@ struct KeyboardView: View {
             }
         }
         .padding(.horizontal, 5)
-        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 3)
+        .frame(width: UIScreen.main.bounds.width)
     }
 }
 

@@ -14,12 +14,26 @@ class BaseViewModel: ObservableObject {
 
 
 class KeyboardViewModel: BaseViewModel {
+    
+    var stringValue: String {
+        KeyboardService.shared.stream.value
+    }
+    
     func type(letter: String) {
+        guard stringValue.count <= 35 else { return }
         KeyboardService.shared.stream.value += letter
     }
     
     func delete() {
-        let stringValue = KeyboardService.shared.stream.value
-        KeyboardService.shared.stream.value = String(stringValue.prefix(stringValue.count - 1))
+        guard stringValue.count > 0 else { return }
+        let hasNewLineChar = [0, 1].contains(stringValue.count % 6) && stringValue.count >= 5
+        let prefixCount = stringValue.count - (hasNewLineChar ? 2 : 1)
+        KeyboardService.shared.stream.value = String(stringValue.prefix(prefixCount))
+    }
+    
+    func enter() {
+        if stringValue.count % 6 == 5 {
+            type(letter: "\n")
+        }
     }
 }
