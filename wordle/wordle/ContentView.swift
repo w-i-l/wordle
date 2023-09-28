@@ -8,14 +8,40 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject private var viewModel = ContentViewModel()
     var body: some View {
+        
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            Spacer()
+            Text("Input text")
+                .foregroundColor(.gray)
+            
+            Text(viewModel.stream)
+                .foregroundColor(.white)
+            
+            Spacer()
+            KeyboardView()
         }
         .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black)
+    }
+}
+
+class ContentViewModel: BaseViewModel {
+    @Published var stream = ""
+    
+    override init() {
+        
+        super.init()
+        
+        KeyboardService.shared.stream
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] stream in
+                self?.stream = stream
+            }
+            .store(in: &bag)
     }
 }
 
