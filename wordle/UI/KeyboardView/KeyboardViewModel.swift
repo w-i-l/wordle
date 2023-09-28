@@ -27,13 +27,25 @@ class KeyboardViewModel: BaseViewModel {
     func delete() {
         guard stringValue.count > 0 else { return }
         let hasNewLineChar = [0, 1].contains(stringValue.count % 6) && stringValue.count >= 5
-        let prefixCount = stringValue.count - (hasNewLineChar ? 2 : 1)
-        KeyboardService.shared.stream.value = String(stringValue.prefix(prefixCount))
+        if hasNewLineChar {
+            let prefixCount = stringValue.count - 2
+            KeyboardService.shared.stream.value = String(stringValue.prefix(prefixCount))
+            
+            AppService.shared.hasUserTriedWordNotification.value = false
+            let patterns = AppService.shared.patterns.value
+            AppService.shared.patterns.value = (0..<(patterns.count - 1)).map {
+                patterns[$0]
+            }
+        } else {
+            let prefixCount = stringValue.count - 1
+            KeyboardService.shared.stream.value = String(stringValue.prefix(prefixCount))
+        }
     }
     
     func enter() {
         if stringValue.count % 6 == 5 {
             type(letter: "\n")
+            AppService.shared.hasUserTriedWordNotification.value = true
         }
     }
 }

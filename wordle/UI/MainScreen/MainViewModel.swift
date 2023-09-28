@@ -8,9 +8,11 @@
 import SwiftUI
 
 class MainViewModel: BaseViewModel {
-    @Published var stream = ""
+    @Published var stream: String = ""
+    @Published var wordToGuess: String
     
     override init() {
+        self.wordToGuess = AppService.shared.wordToGuess
         super.init()
         
         KeyboardService.shared.stream
@@ -19,6 +21,7 @@ class MainViewModel: BaseViewModel {
                 self?.stream = stream
                 if stream.count % 6 == 5 {
                     KeyboardService.shared.stream.value += "\n"
+                    AppService.shared.hasUserTriedWordNotification.value = true
                 }
             }
             .store(in: &bag)

@@ -20,6 +20,10 @@ struct MainView: View {
             
             Spacer()
             
+            Text(viewModel.wordToGuess)
+                .foregroundColor(.white)
+                .font(.subheadline)
+            
             GridView(textToDisplay: viewModel.stream)
             
             Spacer()
@@ -28,7 +32,7 @@ struct MainView: View {
                 .padding(.bottom, 30)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.black)
+        .background(Color.black.ignoresSafeArea())
     }
 }
 
