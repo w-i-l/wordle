@@ -13,7 +13,10 @@ class AppService: BaseViewModel {
     
     var hasUserTriedWordNotification: CurrentValueSubject<Bool, Never> = .init(false)
     var wordToGuess: CurrentValueSubject<String, Never> = .init("")
-    var patterns: CurrentValueSubject<[[PatternType]], Never> = .init([])
+    var patterns: CurrentValueSubject<[[PatternType]], Never> = .init(
+        (0..<6).map { _ in
+            return Array(repeating: PatternType.none, count: 5)
+    })
     var didGameEnded: CurrentValueSubject<Bool, Never> = .init(false)
     var invalidWordEntered: CurrentValueSubject<Bool, Never> = .init(false)
     
@@ -45,9 +48,13 @@ class AppService: BaseViewModel {
         wordToGuess.value = self.words.randomElement()!
         
         hasUserTriedWordNotification.value = false
-        patterns.value = []
+        patterns.value = .init(
+            (0..<6).map { _ in
+                return Array(repeating: PatternType.none, count: 5)
+        })
         
         KeyboardService.shared.stream.value = ""
+        KeyboardService.shared.canUserType.value = true
     }
     
     func doesWordExist(word: String) -> Bool {

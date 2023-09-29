@@ -11,6 +11,7 @@ enum PatternType {
     case matched
     case found
     case notFound
+    case none
     
     func getColor() -> Color {
         switch self {
@@ -20,6 +21,8 @@ enum PatternType {
             return .yellow
         case .notFound:
             return .gray
+        case .none:
+            return .clear
         }
     }
 }
@@ -39,6 +42,9 @@ class GridViewModel: BaseViewModel {
     
     @Published var patterns: [[PatternType]] = []
     @Published var invalidWordEntered: Bool = false
+    @Published var shouldRotateMatrix: [[Bool]] = (0..<6).map { _ in
+        return Array(repeating: false, count: 5)
+    }
     override init() {
         
         super.init()
@@ -61,18 +67,39 @@ class GridViewModel: BaseViewModel {
                     
                     // we verify that the user entered a real word from list
                     let lastWord = String(lastWord.lowercased())
+                    guard !lastWord.isEmpty else { return }
                     if AppService.shared.self.doesWordExist(word: lastWord) {
+                        
+                        DispatchQueue.main.async {
+                            // block user from writing
+                            KeyboardService.shared.canUserType.send(false)
+                        }
                         
                         // we append the pattern
                         self?.lastRow = KeyboardService.shared.stream.value.split(separator: "\n").count - 1
                         let patternToAppend = self!.matchWord(row: self!.lastRow)
-                        AppService.shared.patterns.value.append(patternToAppend)
-                        
-                        // check for the end of game
-                        if patternToAppend == Array(repeating: PatternType.matched, count: 5) {
-                            AppService.shared.didGameEnded.value = true
+                        for column in 0..<5 {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(column)) {
+                                self?.shouldRotateMatrix[self!.lastRow, column] = true
+                                AppService.shared.patterns.value[self!.lastRow, column] = patternToAppend[column]
+                                print(KeyboardService.shared.canUserType.value)
+                            }
                         }
-                    // if the word doesn't exist
+                        
+                        // block hardcoded since using DispatchQueue.main will execute before this line
+                        // ask for help
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            // block user from writing
+                            KeyboardService.shared.canUserType.send(true)
+                            // check for the end of game
+                            if patternToAppend == Array(repeating: PatternType.matched, count: 5) {
+                                
+                                AppService.shared.didGameEnded.value = true
+                            }
+                        }
+                        
+                        
+                        // if the word doesn't exist
                     } else {
                         AppService.shared.invalidWordEntered.value = true
                         
@@ -85,9 +112,8 @@ class GridViewModel: BaseViewModel {
                         // remove its pattern too
                         let patterns = AppService.shared.patterns.value
                         AppService.shared.patterns.value = patterns.dropLast(1)
-                        
-                        return
                     }
+                    
                 }
             }
             .store(in: &bag)
@@ -96,6 +122,18 @@ class GridViewModel: BaseViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] patterns in
                 self?.patterns = patterns
+            }
+            .store(in: &bag)
+        
+        AppService.shared.didGameEnded
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] didGameEnded in
+                self?.lastRow = 0
+                self?.invalidWordEntered = false
+                self?.shouldRotateMatrix = (0..<6).map { _ in
+                    return Array(repeating: false, count: 5)
+                    
+                }
             }
             .store(in: &bag)
     }

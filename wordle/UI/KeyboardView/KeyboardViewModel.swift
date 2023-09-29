@@ -19,13 +19,17 @@ class KeyboardViewModel: BaseViewModel {
         KeyboardService.shared.stream.value
     }
     
+    private var canUserType: Bool {
+        KeyboardService.shared.canUserType.value
+    }
+    
     func type(letter: String) {
-        guard stringValue.count <= 35 else { return }
+        guard stringValue.count <= 35 && canUserType else { return }
         KeyboardService.shared.stream.value += letter
     }
     
     func delete() {
-        guard stringValue.count > 0 else { return }
+        guard stringValue.count > 0 && canUserType else { return }
         let hasNewLineChar = [0].contains(stringValue.count % 6) && stringValue.count >= 5
         if hasNewLineChar {
             return
@@ -44,7 +48,7 @@ class KeyboardViewModel: BaseViewModel {
     }
     
     func enter() {
-        if stringValue.count % 6 == 5 {
+        if stringValue.count % 6 == 5 && canUserType {
             type(letter: "\n")
             AppService.shared.hasUserTriedWordNotification.value = true
         }

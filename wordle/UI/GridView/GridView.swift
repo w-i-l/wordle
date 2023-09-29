@@ -7,6 +7,32 @@
 
 import SwiftUI
 
+fileprivate struct CellView: View {
+    
+    let color: Color
+    let text: String?
+    let isRotating: Bool
+    
+    var body: some View {
+        ZStack {
+            // clear part
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(Color("gray.border"))
+                    .background(color.cornerRadius(12))
+                
+                Text(text ?? "")
+                    .foregroundColor(.white)
+                    .font(.system(size: 24))
+                    .fontWeight(.heavy)
+                    .rotation3DEffect(.degrees(isRotating ? 180 : 0), axis: (x: 1, y: 0, z: 0))
+            }
+        }
+        .rotation3DEffect(.degrees(isRotating ? 180 : 0), axis: (x: 1, y: 0, z: 0))
+        .animation(.default, value: isRotating)
+    }
+}
+
 struct GridView: View {
     
     private var cellDimension: CGFloat {
@@ -18,6 +44,7 @@ struct GridView: View {
     
     @StateObject private var viewModel: GridViewModel = .init()
     @State private var offset: CGFloat = .zero
+    @State private var shouldRotate: Bool = false
     
     init(textToDisplay: String) {
         self.words = textToDisplay.split(separator: "\n").map { String($0) }
@@ -28,21 +55,14 @@ struct GridView: View {
             ForEach(0..<6, id: \.self) { row in
                 HStack {
                     ForEach(0..<5, id: \.self) { column in
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12)
-                                .strokeBorder(Color("gray.border"))
-                                .background(
-                                    (viewModel.patterns.index(row: row, column: column) == nil ? Color.clear : viewModel.patterns.index(row: row, column: column)?.getColor())
-                                        .cornerRadius(12)
-                                )
-                            
-                            Text(words.index(row: row, column: column) ?? "")
-                                .foregroundColor(.white)
-                                .font(.system(size: 24))
-                                .fontWeight(.heavy)
-                        }
+                        let pattern = viewModel.patterns[row, column]
+                        let color = pattern == nil ? Color.black : pattern!.getColor()
+                        CellView(
+                            color: color,
+                            text: words.index(row: row, column: column),
+                            isRotating: viewModel.shouldRotateMatrix[row, column]!
+                        )
                         .frame(width: cellDimension, height: cellDimension)
-                        
                     }
                 }
                 .offset(x: viewModel.currentRow == row ? offset : .zero)

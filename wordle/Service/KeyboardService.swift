@@ -15,6 +15,7 @@ class KeyboardService {
     
     private(set) var stream: CurrentValueSubject<String, Never> = .init("")
     var isKeyboardVisible: CurrentValueSubject<Bool, Never> = .init(false)
+    var canUserType: CurrentValueSubject<Bool, Never> = .init(true)
     
     func emptyStream() {
         self.stream.value = ""
