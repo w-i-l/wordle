@@ -8,6 +8,12 @@
 import SwiftUI
 import Combine
 
+enum GameState {
+    case win
+    case lose
+    case playing
+}
+
 class AppService: BaseViewModel {
     var words: Set<String> = .init()
     
@@ -17,7 +23,7 @@ class AppService: BaseViewModel {
         (0..<6).map { _ in
             return Array(repeating: PatternType.none, count: 5)
     })
-    var didGameEnded: CurrentValueSubject<Bool, Never> = .init(false)
+    var didGameEnded: CurrentValueSubject<GameState, Never> = .init(.playing)
     var invalidWordEntered: CurrentValueSubject<Bool, Never> = .init(false)
     
     static let shared = AppService()

@@ -83,6 +83,17 @@ struct GridView: View {
 
                     AppService.shared.invalidWordEntered.value = false
                 }
+                .onChange(of: viewModel.lastRow) { newValue in
+                    guard newValue == 0 else { return }
+                    let wordToGuess = AppService.shared.wordToGuess.value
+                    viewModel.shouldRotateMatrix = (0..<6).map { _ in
+                        Array(repeating: true, count: 5)
+                    }
+                    AppService.shared.wordToGuess.value = wordToGuess
+                    viewModel.shouldRotateMatrix = (0..<6).map { _ in
+                        Array(repeating: false, count: 5)
+                    }
+                }
             }
         }
     }

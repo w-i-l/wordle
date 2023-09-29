@@ -11,7 +11,7 @@ class MainViewModel: BaseViewModel {
     @Published var stream: String = ""
     @Published var wordToGuess: String = ""
     @Published var didGameEnded: Bool = false
-    
+
     override init() {
         super.init()
         
@@ -19,10 +19,9 @@ class MainViewModel: BaseViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] stream in
                 self?.stream = stream
-//                if stream.count % 6 == 5 {
-//                    KeyboardService.shared.stream.value += "\n"
-//                    AppService.shared.hasUserTriedWordNotification.value = true
-//                }
+                if stream.count == 35 && AppService.shared.didGameEnded.value == .playing {
+                    AppService.shared.didGameEnded.value = .lose
+                }
             }
             .store(in: &bag)
         
@@ -36,7 +35,7 @@ class MainViewModel: BaseViewModel {
         AppService.shared.didGameEnded
             .receive(on: DispatchQueue.main)
             .sink { [weak self] didGameEnded in
-                self?.didGameEnded = didGameEnded
+                self?.didGameEnded = didGameEnded != .playing
             }
             .store(in: &bag)
         

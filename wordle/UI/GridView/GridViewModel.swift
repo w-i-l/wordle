@@ -94,7 +94,7 @@ class GridViewModel: BaseViewModel {
                             // check for the end of game
                             if patternToAppend == Array(repeating: PatternType.matched, count: 5) {
                                 
-                                AppService.shared.didGameEnded.value = true
+                                AppService.shared.didGameEnded.value = .win
                             }
                         }
                         

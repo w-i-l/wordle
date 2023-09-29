@@ -37,11 +37,20 @@ struct MainView: View {
         .toast(
             isPresenting: $viewModel.didGameEnded,
             tapToDismiss: true) {
-                AlertToast(
-                    displayMode: .alert,
-                    type: .systemImage("checkmark.circle.fill", .green),
-                    title: "Game finished"
-                )
+                let state = AppService.shared.didGameEnded.value
+                if state == .win {
+                    return AlertToast(
+                        displayMode: .alert,
+                        type: .systemImage("checkmark.circle.fill", .green),
+                        title: "Game finished"
+                    )
+                } else {
+                    return AlertToast(
+                        displayMode: .alert,
+                        type: .systemImage("x.circle.fill", .green),
+                        title: "Game finished"
+                    )
+                }
             } completion: {
                 AppService.shared.newGame()
             }

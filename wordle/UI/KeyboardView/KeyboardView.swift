@@ -17,6 +17,7 @@ fileprivate struct KeyboardButtonView: View {
     
     let text: String
     let buttonType: KeyboardButtonType
+    let dimension: (width: CGFloat, height: CGFloat)
     let buttonAction: () -> ()
     var body: some View {
         ZStack {
@@ -36,7 +37,7 @@ fileprivate struct KeyboardButtonView: View {
                 .foregroundColor(.white)
                 .font(.system(size: 20, weight: .bold))
         }
-        .frame(width: buttonType == .letter ? 30 : nil, height: 40)
+        .frame(width: buttonType == .letter ? dimension.width : nil, height: dimension.height)
         .onTapGesture {
             buttonAction()
         }
@@ -47,19 +48,28 @@ struct KeyboardView: View {
     
     @StateObject private var viewModel = KeyboardViewModel()
     
+    private var keyboardButtonHeight: CGFloat = 45
+    private var keyboarButtondWidth: CGFloat {
+        (UIScreen.main.bounds.width - (10 * horizontalSpacing)) / 11
+    }
+    
+    private var verticalSpacing: CGFloat = 4
+    private var horizontalSpacing: CGFloat = 2
     var body: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: verticalSpacing) {
             ForEach( [
                 ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
                 ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
                 ["Z", "X", "C", "V", "B", "N", "M"]
             ], id: \.self[0]) { row in
-                HStack {
+                HStack(spacing: horizontalSpacing * 2) {
                     
                     if row.first! == "Z" {
                         KeyboardButtonView(
                             text: "TRY",
-                            buttonType: .enter) {
+                            buttonType: .enter,
+                            dimension: (keyboarButtondWidth, keyboardButtonHeight)
+                        ) {
                                 viewModel.enter()
                             }
                     }
@@ -67,7 +77,9 @@ struct KeyboardView: View {
                     ForEach(row, id: \.self) { letter in
                         KeyboardButtonView(
                             text: letter,
-                            buttonType: .letter) {
+                            buttonType: .letter,
+                            dimension: (keyboarButtondWidth, keyboardButtonHeight)
+                        ) {
                                 viewModel.type(letter: letter)
                             }
                     }
@@ -75,7 +87,9 @@ struct KeyboardView: View {
                     if row.first! == "Z" {
                         KeyboardButtonView(
                             text: "DEL",
-                            buttonType: .delete) {
+                            buttonType: .delete,
+                            dimension: (keyboarButtondWidth, keyboardButtonHeight)
+                        ) {
                                 viewModel.delete()
                             }
                     }
@@ -83,7 +97,6 @@ struct KeyboardView: View {
             }
         }
         .padding(.horizontal, 5)
-        .frame(width: UIScreen.main.bounds.width)
     }
 }
 
