@@ -107,11 +107,15 @@ class GridViewModel: BaseViewModel {
                         let string = KeyboardService.shared.stream.value
                         let newArrayOfString = string.split(separator: "\n").dropLast(1)
                         let newString = String(newArrayOfString.joined(separator: "\n"))
-                        KeyboardService.shared.stream.value = newString
+                        if let lastChar = newString.last, lastChar != "\n" {
+                            KeyboardService.shared.stream.value = newString + "\n"
+                        } else {
+                            KeyboardService.shared.stream.value = newString
+                        }
                         
                         // remove its pattern too
-                        let patterns = AppService.shared.patterns.value
-                        AppService.shared.patterns.value = patterns.dropLast(1)
+                        let row = string.count.quotientAndRemainder(dividingBy: 6).quotient
+                        AppService.shared.patterns.value[row] = Array(repeating: PatternType.none, count: 5)
                     }
                     
                 }

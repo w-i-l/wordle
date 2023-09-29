@@ -20,4 +20,8 @@ class KeyboardService {
     func emptyStream() {
         self.stream.value = ""
     }
+    
+    func separateWords() {
+        self.stream.value += "\n"
+    }
 }

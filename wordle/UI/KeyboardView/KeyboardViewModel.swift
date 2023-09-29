@@ -25,7 +25,10 @@ class KeyboardViewModel: BaseViewModel {
     
     func type(letter: String) {
         guard stringValue.count <= 35 && canUserType else { return }
-        KeyboardService.shared.stream.value += letter
+        let canAddLetter = stringValue.count % 6 < 5
+        if canAddLetter {
+            KeyboardService.shared.stream.value += letter
+        }
     }
     
     func delete() {
@@ -47,9 +50,11 @@ class KeyboardViewModel: BaseViewModel {
         }
     }
     
+
+    
     func enter() {
         if stringValue.count % 6 == 5 && canUserType {
-            type(letter: "\n")
+            KeyboardService.shared.separateWords()
             AppService.shared.hasUserTriedWordNotification.value = true
         }
     }

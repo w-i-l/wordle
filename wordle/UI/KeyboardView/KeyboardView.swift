@@ -27,7 +27,7 @@ fileprivate struct KeyboardButtonView: View {
                 case .delete:
                     Color.red
                 case .enter:
-                    Color.clear
+                    Color.green
                 }
             }
                 .cornerRadius(12)
@@ -58,7 +58,7 @@ struct KeyboardView: View {
                     
                     if row.first! == "Z" {
                         KeyboardButtonView(
-                            text: "",
+                            text: "TRY",
                             buttonType: .enter) {
                                 viewModel.enter()
                             }

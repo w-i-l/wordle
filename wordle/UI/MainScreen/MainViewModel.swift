@@ -19,10 +19,10 @@ class MainViewModel: BaseViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] stream in
                 self?.stream = stream
-                if stream.count % 6 == 5 {
-                    KeyboardService.shared.stream.value += "\n"
-                    AppService.shared.hasUserTriedWordNotification.value = true
-                }
+//                if stream.count % 6 == 5 {
+//                    KeyboardService.shared.stream.value += "\n"
+//                    AppService.shared.hasUserTriedWordNotification.value = true
+//                }
             }
             .store(in: &bag)
         
