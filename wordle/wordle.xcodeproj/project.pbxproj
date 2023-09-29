@@ -19,6 +19,8 @@
 		1755B3A92AC5AEDB008D41C8 /* wordle-words.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1755B3A82AC5AEDA008D41C8 /* wordle-words.txt */; };
 		1755B3AB2AC5AEF5008D41C8 /* AppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755B3AA2AC5AEF5008D41C8 /* AppService.swift */; };
 		1755B3AD2AC5B249008D41C8 /* GridViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755B3AC2AC5B249008D41C8 /* GridViewModel.swift */; };
+		17D49EE22AC6B37B0074ED6C /* Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D49EE12AC6B37B0074ED6C /* Arrays.swift */; };
+		17D49EE52AC6B4150074ED6C /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 17D49EE42AC6B4150074ED6C /* AlertToast */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,7 @@
 		1755B3A82AC5AEDA008D41C8 /* wordle-words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "wordle-words.txt"; sourceTree = "<group>"; };
 		1755B3AA2AC5AEF5008D41C8 /* AppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppService.swift; sourceTree = "<group>"; };
 		1755B3AC2AC5B249008D41C8 /* GridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewModel.swift; sourceTree = "<group>"; };
+		17D49EE12AC6B37B0074ED6C /* Arrays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Arrays.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17D49EE52AC6B4150074ED6C /* AlertToast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +104,7 @@
 				1755B3A32AC5A8A9008D41C8 /* MainScreen */,
 				1755B3A02AC59F1A008D41C8 /* GridView */,
 				1755B39B2AC59287008D41C8 /* KeyboardView */,
+				17D49EDF2AC6B3640074ED6C /* Utils */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -131,6 +136,22 @@
 			path = MainScreen;
 			sourceTree = "<group>";
 		};
+		17D49EDF2AC6B3640074ED6C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				17D49EE02AC6B3690074ED6C /* Extensions */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		17D49EE02AC6B3690074ED6C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				17D49EE12AC6B37B0074ED6C /* Arrays.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -147,6 +168,9 @@
 			dependencies = (
 			);
 			name = wordle;
+			packageProductDependencies = (
+				17D49EE42AC6B4150074ED6C /* AlertToast */,
+			);
 			productName = wordle;
 			productReference = 1755B3862AC581AA008D41C8 /* wordle.app */;
 			productType = "com.apple.product-type.application";
@@ -175,6 +199,9 @@
 				Base,
 			);
 			mainGroup = 1755B37D2AC581AA008D41C8;
+			packageReferences = (
+				17D49EE32AC6B4150074ED6C /* XCRemoteSwiftPackageReference "AlertToast" */,
+			);
 			productRefGroup = 1755B3872AC581AA008D41C8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -211,6 +238,7 @@
 				1755B3AB2AC5AEF5008D41C8 /* AppService.swift in Sources */,
 				1755B38A2AC581AA008D41C8 /* wordleApp.swift in Sources */,
 				1755B3A72AC5A8C1008D41C8 /* MainViewModel.swift in Sources */,
+				17D49EE22AC6B37B0074ED6C /* Arrays.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +441,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		17D49EE32AC6B4150074ED6C /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		17D49EE42AC6B4150074ED6C /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 17D49EE32AC6B4150074ED6C /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1755B37E2AC581AA008D41C8 /* Project object */;
 }

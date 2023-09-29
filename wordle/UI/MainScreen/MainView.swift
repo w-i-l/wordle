@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AlertToast
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
@@ -33,24 +34,18 @@ struct MainView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black.ignoresSafeArea())
-        .sheet(isPresented: $viewModel.didGameEnded) {
-            VStack(spacing: 20) {
-                Text("Congrats!\nYou have won!")
-                    .foregroundColor(.white)
-                    .font(.title)
-                
-                Button {
-                    AppService.shared.newGame()
-                    viewModel.didGameEnded = false
-                } label: {
-                    Text("New Game")
-                        .font(.body)
-                        .foregroundColor(.white)
-                        .background(Color.blue.padding(-10))
-                }
-
+        .toast(
+            isPresenting: $viewModel.didGameEnded,
+            tapToDismiss: true) {
+                AlertToast(
+                    displayMode: .alert,
+                    type: .systemImage("checkmark.circle.fill", .green),
+                    title: "Game finished"
+                )
+            } completion: {
+                AppService.shared.newGame()
             }
-        }
+
     }
 }
 

@@ -15,6 +15,7 @@ class AppService: BaseViewModel {
     var wordToGuess: CurrentValueSubject<String, Never> = .init("")
     var patterns: CurrentValueSubject<[[PatternType]], Never> = .init([])
     var didGameEnded: CurrentValueSubject<Bool, Never> = .init(false)
+    var invalidWordEntered: CurrentValueSubject<Bool, Never> = .init(false)
     
     static let shared = AppService()
     
@@ -47,5 +48,9 @@ class AppService: BaseViewModel {
         patterns.value = []
         
         KeyboardService.shared.stream.value = ""
+    }
+    
+    func doesWordExist(word: String) -> Bool {
+        return self.words.contains(word)
     }
 }

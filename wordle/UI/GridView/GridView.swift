@@ -17,6 +17,7 @@ struct GridView: View {
     private let words: [String]
     
     @StateObject private var viewModel: GridViewModel = .init()
+    @State private var offset: CGFloat = .zero
     
     init(textToDisplay: String) {
         self.words = textToDisplay.split(separator: "\n").map { String($0) }
@@ -37,37 +38,33 @@ struct GridView: View {
                             
                             Text(words.index(row: row, column: column) ?? "")
                                 .foregroundColor(.white)
+                                .font(.system(size: 24))
+                                .fontWeight(.heavy)
                         }
                         .frame(width: cellDimension, height: cellDimension)
                         
                     }
                 }
+                .offset(x: viewModel.currentRow == row ? offset : .zero)
+                .onChange(of: viewModel.invalidWordEntered) { newValue in
+                    guard newValue else { return }
+                    
+                    withAnimation(.default.repeatCount(1, autoreverses: true)) {
+                        offset -= 40
+                    }
+                    
+                    withAnimation(.default) {
+                        offset += 80
+                    }
+
+                    withAnimation(.default) {
+                        offset = .zero
+                    }
+
+                    AppService.shared.invalidWordEntered.value = false
+                }
             }
         }
-    }
-}
-
-extension [[PatternType]] {
-    func index(row: Int, column: Int) -> PatternType? {
-        guard row >= 0 && row < self.count else { return nil }
-        
-        let patternType = self[row]
-        
-        guard column >= 0 && column < patternType.count else { return nil}
-        let index = patternType[column]
-        return patternType[column]
-    }
-}
-
-extension [String] {
-    func index(row: Int, column: Int) -> String? {
-        guard row >= 0 && row < self.count else { return nil }
-        
-        let string = self[row]
-        
-        guard column >= 0 && column < string.count else { return nil}
-        let index = string.index(string.startIndex, offsetBy: column)
-        return String(string[index])
     }
 }
 
