@@ -42,13 +42,13 @@ struct MainView: View {
                     return AlertToast(
                         displayMode: .alert,
                         type: .systemImage("checkmark.circle.fill", .green),
-                        title: "Game finished"
+                        title: "Game won"
                     )
                 } else {
                     return AlertToast(
                         displayMode: .alert,
-                        type: .systemImage("x.circle.fill", .green),
-                        title: "Game finished"
+                        type: .systemImage("x.circle.fill", .red),
+                        title: "Game lost"
                     )
                 }
             } completion: {

@@ -28,7 +28,7 @@ enum PatternType {
 }
 
 class GridViewModel: BaseViewModel {
-    @Published var lastRow: Int = 0
+    
     var currentRow: Int {
         let noWords = KeyboardService.shared.stream.value.contains("\n")
         if lastRow == 0 && !noWords {
@@ -40,6 +40,7 @@ class GridViewModel: BaseViewModel {
         return 0
     }
     
+    @Published var lastRow: Int = 0
     @Published var patterns: [[PatternType]] = []
     @Published var invalidWordEntered: Bool = false
     @Published var shouldRotateMatrix: [[Bool]] = (0..<6).map { _ in
@@ -89,17 +90,24 @@ class GridViewModel: BaseViewModel {
                         // block hardcoded since using DispatchQueue.main will execute before this line
                         // ask for help
                         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            
                             // block user from writing
                             KeyboardService.shared.canUserType.send(true)
-                            // check for the end of game
+                            
+                            // check for the end of game - win
                             if patternToAppend == Array(repeating: PatternType.matched, count: 5) {
-                                
                                 AppService.shared.didGameEnded.value = .win
+                                return
+                            }
+                            
+                            // check for the end of game - lose
+                            if KeyboardService.shared.stream.value.count == 36 && AppService.shared.didGameEnded.value == .playing {
+                                AppService.shared.didGameEnded.value = .lose
                             }
                         }
                         
                         
-                        // if the word doesn't exist
+                    // if the word doesn't exist
                     } else {
                         AppService.shared.invalidWordEntered.value = true
                         

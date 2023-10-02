@@ -15,7 +15,7 @@ class BaseViewModel: ObservableObject {
 
 class KeyboardViewModel: BaseViewModel {
     
-    var stringValue: String {
+    private var stringValue: String {
         KeyboardService.shared.stream.value
     }
     
@@ -36,14 +36,6 @@ class KeyboardViewModel: BaseViewModel {
         let hasNewLineChar = [0].contains(stringValue.count % 6) && stringValue.count >= 5
         if hasNewLineChar {
             return
-//            let prefixCount = stringValue.count - 2
-//            KeyboardService.shared.stream.value = String(stringValue.prefix(prefixCount))
-//            
-//            AppService.shared.hasUserTriedWordNotification.value = false
-//            let patterns = AppService.shared.patterns.value
-//            AppService.shared.patterns.value = (0..<(patterns.count - 1)).map {
-//                patterns[$0]
-//            }
         } else {
             let prefixCount = stringValue.count - 1
             KeyboardService.shared.stream.value = String(stringValue.prefix(prefixCount))

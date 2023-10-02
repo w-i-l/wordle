@@ -19,9 +19,6 @@ class MainViewModel: BaseViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] stream in
                 self?.stream = stream
-                if stream.count == 35 && AppService.shared.didGameEnded.value == .playing {
-                    AppService.shared.didGameEnded.value = .lose
-                }
             }
             .store(in: &bag)
         

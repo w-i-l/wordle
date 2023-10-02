@@ -54,6 +54,7 @@ class AppService: BaseViewModel {
         wordToGuess.value = self.words.randomElement()!
         
         hasUserTriedWordNotification.value = false
+        didGameEnded.value = .playing
         patterns.value = .init(
             (0..<6).map { _ in
                 return Array(repeating: PatternType.none, count: 5)

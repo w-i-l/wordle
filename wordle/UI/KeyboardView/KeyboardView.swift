@@ -19,28 +19,70 @@ fileprivate struct KeyboardButtonView: View {
     let buttonType: KeyboardButtonType
     let dimension: (width: CGFloat, height: CGFloat)
     let buttonAction: () -> ()
+    
+    private var specialButtonPressed: Bool {
+        buttonType != .letter && showCellPressed
+    }
+    
+    @State private var showCellPressed: Bool = false
     var body: some View {
         ZStack {
-            Group {
-                switch buttonType {
-                case .letter:
-                    Color("gray")
-                case .delete:
-                    Color.red
-                case .enter:
-                    Color.green
+            
+            // actual keyboard cell
+            ZStack {
+                Group {
+                    switch buttonType {
+                    case .letter:
+                        Color("gray")
+                    case .delete:
+                        showCellPressed ? Color(red: 120, green: 47, blue: 41) : Color.red
+                    case .enter:
+                        showCellPressed ? Color(red: 120, green: 47, blue: 41) : Color.green
+                    }
+                }
+                .cornerRadius(12)
+                
+                Text(text)
+                    .foregroundColor(specialButtonPressed ? .gray : .white)
+                    .font(.system(size: 20, weight: .bold))
+            }
+            
+            .onTapGesture {
+                showCellPressed = true
+                buttonAction()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    showCellPressed = false
                 }
             }
-                .cornerRadius(12)
+
             
-            Text(text)
-                .foregroundColor(.white)
-                .font(.system(size: 20, weight: .bold))
+            
+            
+            if showCellPressed && buttonType == .letter{
+                VStack(spacing: 0) {
+                    // actual keyboard cell
+                    ZStack {
+                        VStack(spacing: 0) {
+                            Color("gray")
+                                .frame(width: dimension.width * 1.5, height: dimension.height * 1.5)
+                                .cornerRadius(12)
+                            Color("gray")
+                                .frame(width: dimension.width * 1, height: dimension.height)
+                        }
+                        
+                        
+                        Text(text)
+                            .foregroundColor(.white)
+                            .font(.system(size: 28, weight: .heavy))
+                            .offset(y: -dimension.height / 2)
+                    }
+                    .frame(width: dimension.width, height: dimension.height * 1.5)
+                }
+                .offset(y: -dimension.height)
+                .frame(width: buttonType == .letter ? dimension.width : nil, height: dimension.height)
+            }
         }
         .frame(width: buttonType == .letter ? dimension.width : nil, height: dimension.height)
-        .onTapGesture {
-            buttonAction()
-        }
     }
 }
 
@@ -55,6 +97,7 @@ struct KeyboardView: View {
     
     private var verticalSpacing: CGFloat = 4
     private var horizontalSpacing: CGFloat = 2
+    
     var body: some View {
         VStack(spacing: verticalSpacing) {
             ForEach( [
@@ -70,8 +113,8 @@ struct KeyboardView: View {
                             buttonType: .enter,
                             dimension: (keyboarButtondWidth, keyboardButtonHeight)
                         ) {
-                                viewModel.enter()
-                            }
+                            viewModel.enter()
+                        }
                     }
                     
                     ForEach(row, id: \.self) { letter in
@@ -80,8 +123,8 @@ struct KeyboardView: View {
                             buttonType: .letter,
                             dimension: (keyboarButtondWidth, keyboardButtonHeight)
                         ) {
-                                viewModel.type(letter: letter)
-                            }
+                            viewModel.type(letter: letter)
+                        }
                     }
                     
                     if row.first! == "Z" {
@@ -90,8 +133,8 @@ struct KeyboardView: View {
                             buttonType: .delete,
                             dimension: (keyboarButtondWidth, keyboardButtonHeight)
                         ) {
-                                viewModel.delete()
-                            }
+                            viewModel.delete()
+                        }
                     }
                 }
             }

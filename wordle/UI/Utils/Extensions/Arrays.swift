@@ -32,42 +32,42 @@ extension [[PatternType]] {
         }
     }
 }
+
+extension [String] {
+    subscript (_ row: Int, _ column: Int) -> String? {
+        guard row >= 0 && row < self.count else { return nil }
+        
+        let string = self[row]
+        
+        guard column >= 0 && column < string.count else { return nil}
+        let index = string.index(string.startIndex, offsetBy: column)
+        return String(string[index])
+    }
+}
+
+extension [[Bool]] {
     
-    extension [String] {
-        func index(row: Int, column: Int) -> String? {
+    subscript (_ row: Int, _ column: Int) -> Bool? {
+        get {
             guard row >= 0 && row < self.count else { return nil }
             
-            let string = self[row]
+            let shouldReturn = self[row]
             
-            guard column >= 0 && column < string.count else { return nil}
-            let index = string.index(string.startIndex, offsetBy: column)
-            return String(string[index])
+            guard column >= 0 && column < shouldReturn.count else { return nil}
+            return shouldReturn[column]
         }
-    }
-    
-    extension [[Bool]] {
         
-        subscript (_ row: Int, _ column: Int) -> Bool? {
-            get {
-                guard row >= 0 && row < self.count else { return nil }
-                
-                let shouldReturn = self[row]
-                
-                guard column >= 0 && column < shouldReturn.count else { return nil}
-                return shouldReturn[column]
-            }
+        set(newValue) {
+            guard row >= 0 && row < self.count else { return }
             
-            set(newValue) {
-                guard row >= 0 && row < self.count else { return }
-                
-                var rowArray = self[row]
-                
-                guard column >= 0 && column < rowArray.count else { return }
-                
-                if let newValue = newValue {
-                    rowArray[column] = newValue
-                    self[row] = rowArray
-                }
+            var rowArray = self[row]
+            
+            guard column >= 0 && column < rowArray.count else { return }
+            
+            if let newValue = newValue {
+                rowArray[column] = newValue
+                self[row] = rowArray
             }
         }
     }
+}
