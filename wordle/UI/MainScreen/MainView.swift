@@ -9,8 +9,10 @@ import SwiftUI
 import AlertToast
 
 struct MainView: View {
-    @StateObject private var viewModel = MainViewModel()
     
+    @StateObject private var viewModel = MainViewModel()
+    @State private var showAdminPasswordTextField = false
+    @State private var enteredPassword = ""
     var body: some View {
         ZStack {
             VStack {
@@ -22,9 +24,32 @@ struct MainView: View {
                 
                 Spacer()
                 
-                Text(viewModel.wordToGuess)
-                    .foregroundColor(.white)
-                    .font(.subheadline)
+                if viewModel.hasUserAdminRights {
+                    HStack {
+                        Text(viewModel.wordToGuess)
+                            .foregroundColor(.white)
+                            .font(.subheadline)
+                            
+                        Button {
+                            viewModel.hasUserAdminRights = false
+                        } label: {
+                            Text("Disable admin")
+                                .foregroundColor(.blue)
+                                .font(.system(size: 18, weight: .light))
+                        }
+
+                    }
+                    
+                } else {
+                    Button {
+                        showAdminPasswordTextField = true
+                    } label: {
+                        Text("Enable admin rights")
+                            .foregroundColor(Color.gray)
+                            .font(.system(size: 16, weight: .ultraLight))
+                    }
+                }
+                
                 
                 GridView(textToDisplay: viewModel.stream)
                 
@@ -40,26 +65,31 @@ struct MainView: View {
                 ModalView(didGameEnded: $viewModel.didGameEnded)
             }
         }
-//        .toast(
-//            isPresenting: $viewModel.didGameEnded,
-//            tapToDismiss: true) {
-//                let state = AppService.shared.didGameEnded.value
-//                if state == .win {
-//                    return AlertToast(
-//                        displayMode: .alert,
-//                        type: .systemImage("checkmark.circle.fill", .green),
-//                        title: "Game won"
-//                    )
-//                } else {
-//                    return AlertToast(
-//                        displayMode: .alert,
-//                        type: .systemImage("x.circle.fill", .red),
-//                        title: "Game lost"
-//                    )
-//                }
-//            } completion: {
-//                AppService.shared.newGame()
-//            }`
+        /// TODO: admin panel 
+        .sheet(isPresented: $showAdminPasswordTextField) {
+            TextField("", text: $enteredPassword)
+                .padding(.vertical, 10)
+                .padding(.horizontal, 20)
+                .background(Color.gray.cornerRadius(12))
+                .padding(10)
+            
+            Button {
+                if enteredPassword == "123456" {
+                    viewModel.hasUserAdminRights = true
+                    showAdminPasswordTextField = false
+                    enteredPassword = ""
+                }
+            } label: {
+                Text("Submit")
+                    .foregroundColor(.black)
+                    .font(.system(size: 20, weight: .bold))
+                    .padding(10)
+                    .background(Color.blue)
+                    .cornerRadius(12)
+                    .padding(20)
+            }
+
+        }
     }
 }
 

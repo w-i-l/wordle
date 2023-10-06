@@ -10,7 +10,7 @@ import SwiftUI
 
 class ModalViewModel: BaseViewModel {
     @Published var didGameEnded: GameState = .playing
-    
+    @Published var showWebView: Bool = false
     override init() {
         
         super.init()
@@ -24,10 +24,10 @@ class ModalViewModel: BaseViewModel {
         
     }
     
-    func getURL() -> URL {
+    func getURL() -> String {
         let wordToGuess = AppService.shared.wordToGuess.value
         let website = "https://www.dictionary.com/browse/\(wordToGuess)"
-        return URL(string: website)!
+        return website
     }
     
 }

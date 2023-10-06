@@ -80,7 +80,7 @@ class GridViewModel: BaseViewModel {
                         self?.lastRow = KeyboardService.shared.stream.value.split(separator: "\n").count - 1
                         let patternToAppend = self!.matchWord(row: self!.lastRow)
                         for column in 0..<5 {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(column)) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(column)/3) {
                                 self?.shouldRotateMatrix[self!.lastRow, column] = true
                                 AppService.shared.patterns.value[self!.lastRow, column] = patternToAppend[column]
                                 print(KeyboardService.shared.canUserType.value)
@@ -89,7 +89,7 @@ class GridViewModel: BaseViewModel {
                         
                         // block hardcoded since using DispatchQueue.main will execute before this line
                         // ask for help
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5/3) {
                             
                             // block user from writing
                             KeyboardService.shared.canUserType.send(true)

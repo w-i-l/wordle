@@ -11,6 +11,7 @@ class MainViewModel: BaseViewModel {
     @Published var stream: String = ""
     @Published var wordToGuess: String = ""
     @Published var didGameEnded: Bool = false
+    @Published var hasUserAdminRights: Bool = false
 
     override init() {
         super.init()

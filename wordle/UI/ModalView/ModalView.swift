@@ -52,7 +52,9 @@ struct ModalView: View {
                     .foregroundColor(.white)
                     .font(.system(size: 20, weight: .bold))
                 
-                Link(destination: viewModel.getURL()) {
+                Button {
+                    viewModel.showWebView.toggle()
+                } label: {
                     Group {
                         Text("Learn more about it")
                             .font(.system(size: 18, weight: .medium))
@@ -88,6 +90,9 @@ struct ModalView: View {
                 .strokeBorder(Color.white)
         )
         .cornerRadius(12)
+        .sheet(isPresented: $viewModel.showWebView) {
+            WebView(url: viewModel.getURL())
+        }
     }
 }
 
